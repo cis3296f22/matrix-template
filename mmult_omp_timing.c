@@ -1,5 +1,6 @@
 /**
- * 
+ * This file compares the time to multiply matrices
+ * both unoptimized and with OMP. 
  */
 
 #include <stdio.h>

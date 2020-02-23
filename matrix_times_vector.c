@@ -39,7 +39,8 @@ int main(int argc, char* argv[])
         nrows = atoi(argv[1]);
         ncols = nrows;
         // aa = (double*)malloc(sizeof(double) * nrows * ncols);
-        b = (double*)malloc(sizeof(double) * ncols);
+        // b = (double*)malloc(sizeof(double) * ncols);
+        b = gen_matrix(1, 5);
         c = (double*)malloc(sizeof(double) * nrows);
         buffer = (double*)malloc(sizeof(double) * ncols);
         master = 0;
