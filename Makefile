@@ -32,6 +32,9 @@ pi:	pi.c
 mxv_omp_mpi:	mxv_omp_mpi.c
 	mpicc -fopenmp -O3 -o mxv_omp_mpi mxv_omp_mpi.c
 
+test_mmult:	test_mmult.c mmult.c mat.c
+	gcc -c test_mmult.c mmult.c mat.c -lm -o test_mmult
+
 clean:
 	rm -f *.o
 	rm -f ${PGMS}

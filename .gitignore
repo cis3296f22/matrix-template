@@ -1,4 +1,5 @@
 *.o
+*.exe
 ~
 hello
 matrix_times_vector
@@ -7,3 +8,5 @@ mxv_omp_mpi
 mmult_omp_timing
 mmult_omp_mpi
 mmult_mpi_omp
+test_mmult
+/.vscode
