@@ -34,19 +34,19 @@ int main(int argc, char* argv[])
         ncols = nrows;
         
         if (myid == 0) {
-            // Master Code goes here
+            // Controller Code goes here
             aa = gen_matrix(nrows, ncols);
             bb = gen_matrix(ncols, nrows);
             cc1 = malloc(sizeof(double) * nrows * nrows); 
             starttime = MPI_Wtime();
-            /* Insert your master code here to store the product into cc1 */
+            /* Insert your controller code here to store the product into cc1 */
             endtime = MPI_Wtime();
             printf("%f\n",(endtime - starttime));
             cc2  = malloc(sizeof(double) * nrows * nrows);
             mmult(cc2, aa, nrows, ncols, bb, ncols, nrows);
             compare_matrices(cc2, cc1, nrows, nrows);
         } else {
-            // Slave Code goes here
+            // Worder code goes here
         }
     } else {
         fprintf(stderr, "Usage matrix_times_vector <size>\n");

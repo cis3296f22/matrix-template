@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 
     int run_index;
     int nruns;
-    int myid, master, numprocs;
+    int myid, numprocs;
     
     double starttime, endtime;
     MPI_Status status;
@@ -43,14 +43,14 @@ int main(int argc, char* argv[])
         b = gen_matrix(1, 5);
         c = (double*)malloc(sizeof(double) * nrows);
         buffer = (double*)malloc(sizeof(double) * ncols);
-        master = 0;
-        if (myid == master) {
-            // Master Code goes here
+
+        if (myid == 0) {
+            // Controler code goes here
             aa = gen_matrix(nrows, ncols);
             
             starttime = MPI_Wtime();
             numsent = 0;
-            MPI_Bcast(b, ncols, MPI_DOUBLE, master, MPI_COMM_WORLD);
+            MPI_Bcast(b, ncols, MPI_DOUBLE, 0, MPI_COMM_WORLD);
             for (i = 0; i < min(numprocs-1, nrows); i++) {
                 for (j = 0; j < ncols; j++) {
                     buffer[j] = aa[i * ncols + j];
@@ -79,11 +79,11 @@ int main(int argc, char* argv[])
             printf("Time taken: %f\n",(endtime - starttime));
             print_matrix(c, nrows, 1);
         } else {
-            // Slave Code goes here
-            MPI_Bcast(b, ncols, MPI_DOUBLE, master, MPI_COMM_WORLD);
+            // Worker code goes here
+            MPI_Bcast(b, ncols, MPI_DOUBLE, 0, MPI_COMM_WORLD);
             if (myid <= nrows) {
                 while(1) {
-                    MPI_Recv(buffer, ncols, MPI_DOUBLE, master, MPI_ANY_TAG, 
+                    MPI_Recv(buffer, ncols, MPI_DOUBLE, 0, MPI_ANY_TAG, 
                         MPI_COMM_WORLD, &status);
                     if (status.MPI_TAG == 0){
                         break;
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
                     for (j = 0; j < ncols; j++) {
                         ans += buffer[j] * b[j];
                     }
-                    MPI_Send(&ans, 1, MPI_DOUBLE, master, row, MPI_COMM_WORLD);
+                    MPI_Send(&ans, 1, MPI_DOUBLE, 0, row, MPI_COMM_WORLD);
                 }
             }
         }
